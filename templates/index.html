@@ -1,0 +1,414 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Dashboard | APEKS UI</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon
+		============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='img/favicon.ico')}}">
+    <!-- Google Fonts
+		============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <!-- owl.carousel CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/owl.carousel.css">
+    <link rel="stylesheet" href="static/css/owl.theme.css">
+    <link rel="stylesheet" href="static/css/owl.transitions.css">
+    <!-- meanmenu CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/meanmenu/meanmenu.min.css">
+    <!-- animate CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/animate.css">
+    <!-- normalize CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <!-- mCustomScrollbar CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <!-- jvectormap CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/jvectormap/jquery-jvectormap-2.0.3.css">
+    <!-- notika icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/notika-custom-icon.css">
+    <!-- wave CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/wave/waves.min.css">
+    <!-- main CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/main.css">
+    <!-- style CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/style.css">
+    <!-- responsive CSS
+		============================================ -->
+    <link rel="stylesheet" href="static/css/responsive.css">
+    <!-- modernizr JS
+		============================================ -->
+    <script src="static/js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <style>
+/* The container */
+.containerZ {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.containerZ input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.containerZ:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerZ input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.containerZ input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.containerZ .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+</style>
+</head>
+
+<body>
+    <div class="modal animated flash" id="myModalfive" role="dialog">
+        <div class="modal-dialog modals-default">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h2>Measure Complete</h2>
+                    <p>Measuring Complete. Please Check in Your Dashboard</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <!-- Start Header Top Area -->
+    <div class="header-top-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="logo-area">
+                        <h1 style="color: white;">APEKS UI</h1>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Header Top Area -->
+
+    <!-- Start Status area -->
+    <div class="notika-status-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-example-wrap mg-t-30">
+                        <div class="cmp-tb-hd cmp-int-hd">
+                            <h2>Information</h2>
+                        </div>
+                        <div class="form-group">
+                        <label for="sel1">Select Gender:</label>
+                        <select class="form-control" id="sel1">
+                            <option>Man</option>
+                            <option>Woman</option>
+                        </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                <div class="form-example-int form-example-st">
+                                    <div class="form-group">
+                                        <div class="nk-int-st">
+                                            <input id="umur" type="text" class="form-control input-sm" placeholder="Enter Age">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+                                <div class="form-example-int">
+                                <label class="containerZ">Ignore Information
+                                    <input name="checkbox" id="hilang" onclick="ignora();" type="checkbox" id="checkbox" />
+                                    <span class="checkmark"></span>
+                                </label>
+                                <br><br>
+                                <button id="ukur" onclick="ReqData()" class="btn btn-success notika-btn-success">Start Measuring</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2 id="tinggi">0 CM</h2>
+                            <p>Body Height</p>
+                        </div>
+                        <div class="sparkline-bar-stats1">9,4,8,6,5,6,4,8,3,5,9,5</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2 id="zscore">NoStats</h2>
+                            <p id="zscore1">Z-Score/IMT</p>
+                        </div>
+                        <div class="sparkline-bar-stats2">1,4,8,3,5,6,4,8,3,3,9,5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Status area-->
+    <br>
+    <!-- Start Email Statistic area-->
+    <div class="notika-email-post-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="email-statis-inner notika-shadow">
+                        <div class="email-ctn-round">
+                            <div class="email-rdn-hd">
+								<h2>Body Weight</h2>
+							</div>
+                            <div class="email-statis-wrap">
+                                <div class="email-round-nock">
+                                    <input type="text" class="knob" value="0" data-rel="0" data-linecap="round" data-width="110" data-bgcolor="#E4E4E4" data-fgcolor="#00c292" data-thickness=".10" data-readonly="true">
+                                </div>
+                                <div class="email-ctn-nock">
+                                    <p>Kg (Kilograms)</p>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Email Statistic area-->
+
+    <!-- Start Footer area-->
+    <div class="footer-copyright-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="footer-copy-right">
+                        <p>Copyright © APEKS 2021
+. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Footer area-->
+    <!-- jquery
+		============================================ -->
+    <script src="static/js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- bootstrap JS
+		============================================ -->
+    <script src="static/js/bootstrap.min.js"></script>
+    <!-- wow JS
+		============================================ -->
+    <script src="static/js/wow.min.js"></script>
+    <!-- price-slider JS
+		============================================ -->
+    <script src="static/js/jquery-price-slider.js"></script>
+    <!-- owl.carousel JS
+		============================================ -->
+    <script src="static/js/owl.carousel.min.js"></script>
+    <!-- scrollUp JS
+		============================================ -->
+    <script src="static/js/jquery.scrollUp.min.js"></script>
+    <!-- meanmenu JS
+		============================================ -->
+    <script src="static/js/meanmenu/jquery.meanmenu.js"></script>
+    <!-- counterup JS
+		============================================ -->
+    <script src="static/js/counterup/jquery.counterup.min.js"></script>
+    <script src="static/js/counterup/waypoints.min.js"></script>
+    <script src="static/js/counterup/counterup-active.js"></script>
+    <!-- mCustomScrollbar JS
+		============================================ -->
+    <script src="static/js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- jvectormap JS
+		============================================ -->
+    <script src="static/js/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="static/js/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="static/js/jvectormap/jvectormap-active.js"></script>
+    <!-- sparkline JS
+		============================================ -->
+    <script src="static/js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="static/js/sparkline/sparkline-active.js"></script>
+    <!-- sparkline JS
+		============================================ -->
+    <script src="static/js/flot/jquery.flot.js"></script>
+    <script src="static/js/flot/jquery.flot.resize.js"></script>
+    <script src="static/js/flot/curvedLines.js"></script>
+    <script src="static/js/flot/flot-active.js"></script>
+    <!-- knob JS
+		============================================ -->
+    <script src="static/js/knob/jquery.knob.js"></script>
+    <script src="static/js/knob/jquery.appear.js"></script>
+    <script src="static/js/knob/knob-active.js"></script>
+    <!--  wave JS
+		============================================ -->
+    <script src="static/js/wave/waves.min.js"></script>
+    <script src="static/js/wave/wave-active.js"></script>
+    <!--  todo JS
+		============================================ -->
+    <script src="static/js/todo/jquery.todo.js"></script>
+    <!-- plugins JS
+		============================================ -->
+    <script src="static/js/plugins.js"></script>
+	<!--  Chat JS
+		============================================ -->
+    <script src="static/js/chat/moment.min.js"></script>
+    <script src="static/js/chat/jquery.chat.js"></script>
+    <!-- main JS
+		============================================ -->
+    <script src="static/js/main.js"></script>
+	<!-- tawk chat JS
+		============================================
+    <script src="static/js/tawk-chat.js"></script> -->
+
+    <script>
+
+    function ignora(){
+        checkku = document.getElementById("hilang").checked;
+        //alert(checkku);
+        if (checkku){
+            document.getElementById("umur").disabled = true;
+            document.getElementById("sel1").disabled = true;
+        }
+        else{
+            document.getElementById("umur").disabled = false;
+            document.getElementById("sel1").disabled = false;
+        }
+    }
+
+    //run Request
+    function ReqData(){
+        var startTime = performance.now();
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.responseText == "ok"){
+                    document.getElementById("ukur").disabled = false;
+                    document.getElementById("ukur").innerHTML = "Start Measuring";
+                }
+                else{
+                    myJSONS = JSON.parse(this.responseText);
+                    console.log(myJSONS);
+                    document.getElementById("tinggi").innerHTML = myJSONS.tinggi;
+                    document.getElementById("zscore").innerHTML = myJSONS.zimt.Status;
+
+                    $('.knob')
+                        .val(myJSONS.berat)
+                        .trigger('change');
+                    document.getElementsByClassName("knob")[0].value = myJSONS.berat;
+                    document.getElementById("zscore1").innerHTML = myJSONS.Pesan;
+
+                    $('#myModalfive').modal('show');
+
+                    //z.getElementsByClassName('spanner_alpha')[0].innerHTML = myJSONS.data;
+                    var endTime = performance.now();
+                    alert(endTime-startTime);
+                    xhttp.open("GET", "http://127.0.0.1:5050/clear", true);
+                    xhttp.send(null);
+                }
+            }
+        };
+        xhttp.open("POST", "http://127.0.0.1:5050/measure", true);
+        document.getElementById("ukur").disabled = true;
+        document.getElementById("ukur").innerHTML = "Waiting For Measuring...";
+        //xhttp.setRequestHeader("Content-Type", "application/json");
+        //xhttp.setRequestHeader("Origin", "*");
+        disabledU = document.getElementById("umur").disabled;
+        if (disabledU){
+            xhttp.send(JSON.stringify({"usiaa": umur, "kelaminn": jk}));
+            //var jk = "no";
+            //var umur = document.getElementById("umur").value;
+        }
+        else{
+            var jk = document.getElementById("sel1").value;
+            var umur = document.getElementById("umur").value;
+            xhttp.send(JSON.stringify({"usia": umur, "kelamin": jk}));
+        }
+        //xhttp.send(JSON.stringify({"usia": umur, "kelamin": jk}));
+    }
+    </script>
+</body>
+
+</html>
