@@ -385,12 +385,12 @@
                     //z.getElementsByClassName('spanner_alpha')[0].innerHTML = myJSONS.data;
                     var endTime = performance.now();
                     alert(endTime-startTime);
-                    xhttp.open("GET", "http://127.0.0.1:5050/clear", true);
+                    xhttp.open("GET", "/clear", true);
                     xhttp.send(null);
                 }
             }
         };
-        xhttp.open("POST", "http://127.0.0.1:5050/measure", true);
+        xhttp.open("POST", "/measure", true);
         document.getElementById("ukur").disabled = true;
         document.getElementById("ukur").innerHTML = "Waiting For Measuring...";
         //xhttp.setRequestHeader("Content-Type", "application/json");
