@@ -1,0 +1,12 @@
+[Unit]
+Description=APEKS uWSGI Service
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/pi/APEKS/
+ExecStart=/usr/local/bin/uwsgi --ini /home/pi/APEKS/uwsgi.ini
+
+[Install]
+WantedBy=multi-user.target
