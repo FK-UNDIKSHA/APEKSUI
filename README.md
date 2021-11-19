@@ -7,6 +7,7 @@ Dependency:
 - PySerial
 - bluepy
 - Flask
+- sqlite3
 
 Installation:
 1) Just like ordinary simple flask
