@@ -186,12 +186,14 @@
                                     <div class="form-group">
                                         <div class="nk-int-st">
                                             <input id="name" type="text" class="form-control input-sm" placeholder="Your Name">
+                                        </div><br><br>
+                                        <div class="nk-int-st">
                                             <input id="umur" type="text" class="form-control input-sm" placeholder="Enter Age (Year)">
-                                        </div>
+                                        </div><br><br>
                                     </div>
                                 </div>
                             </div>
-                            <br><br>
+                            <br><br><br><br>
                             <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
                                 <div class="form-example-int">
                                 <label class="containerZ">Ignore Information
@@ -345,26 +347,59 @@
     <script src="static/js/tawk-chat.js"></script> -->
 
     <script>
+    document.onreadystatechange = () => {
+      if (document.readyState === 'complete') {
+        console.log('DOM is ready.');
+        Sanity();
+        document.getElementById("hilang").removeAttribute('disabled');
+      }
+    };
 
     function ignora(){
         checkku = document.getElementById("hilang").checked;
+        cheku = document.getElementById("hilang");
         //alert(checkku);
         if (checkku){
             document.getElementById("name").disabled = true;
             document.getElementById("umur").disabled = true;
             document.getElementById("sel1").disabled = true;
+            cheku.removeAttribute('required');
         }
         else{
             document.getElementById("name").disabled = false;
             document.getElementById("umur").disabled = false;
             document.getElementById("sel1").disabled = false;
+            cheku.setAttribute('required', true);
         }
     }
 
     //run Request
+    function Sanity(){
+        var sanity = new XMLHttpRequest();
+        sanity.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.responseText == "ok"){
+                    document.getElementById("ukur").disabled = false;
+                    document.getElementById("ukur").innerHTML = "Start Measuring";
+                }
+            }
+        };
+        sanity.open("GET", "/sane", true);
+        sanity.send(null);
+    }
+
     function ReqData(){
         var startTime = performance.now();
         var xhttp = new XMLHttpRequest();
+        var xhttp2 = new XMLHttpRequest();
+        xhttp2.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.responseText == "ok"){
+                    document.getElementById("ukur").disabled = false;
+                    document.getElementById("ukur").innerHTML = "Start Measuring";
+                }
+            }
+        };
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 if (this.responseText == "ok"){
@@ -377,19 +412,17 @@
                     document.getElementById("tinggi").innerHTML = myJSONS.tinggi;
                     document.getElementById("zscore").innerHTML = myJSONS.zimt.Status;
 
+                    //z.getElementsByClassName('spanner_alpha')[0].innerHTML = myJSONS.data;
+                    //var endTime = performance.now();
+                    //alert(endTime-startTime);
+                    xhttp2.open("GET", "/clear", true);
+                    xhttp2.send(null);
+                    $('#myModalfive').modal('show');
                     $('.knob')
                         .val(myJSONS.berat)
                         .trigger('change');
                     document.getElementsByClassName("knob")[0].value = myJSONS.berat;
                     document.getElementById("zscore1").innerHTML = myJSONS.Pesan;
-
-                    $('#myModalfive').modal('show');
-
-                    //z.getElementsByClassName('spanner_alpha')[0].innerHTML = myJSONS.data;
-                    var endTime = performance.now();
-                    alert(endTime-startTime);
-                    xhttp.open("GET", "/clear", true);
-                    xhttp.send(null);
                 }
             }
         };
@@ -400,9 +433,6 @@
         //xhttp.setRequestHeader("Origin", "*");
         disabledU = document.getElementById("umur").disabled;
         if (disabledU){
-            //var jk = document.getElementById("sel1").value;
-            //var umur = document.getElementById("umur").value;
-            //var name = document.getElementById("name").value;
             xhttp.send(JSON.stringify({"namaa": name, "usiaa": umur, "kelaminn": jk}));
             //var jk = "no";
             //var umur = document.getElementById("umur").value;

@@ -127,7 +127,7 @@ def ThreadD(q):
     now = datetime.now()
     waktu = str(now.strftime("%d/%m/%Y %H:%M:%S"))
     db_ = apeksdbctl.create_connection('apeks.db')
-    apeksdbctl.AddData(db_, [str(nama), str(usia), str(waktu), str(Berat), str(Tinggi), str(zimt)])
+    apeksdbctl.AddData(db_, [str(nama), str(jk), str(usia/12), str(waktu), str(Berat), str(Tinggi), str(zimt['Status'])])
     
     Coms.SendCommand("pesanx;Tinggi: " + str(Tinggi) + "CM?" + "Berat: " + str(Berat) + "KG", 0)
     q.put_nowait(resp)
@@ -160,7 +160,7 @@ def Sane():
 def Admin():
     db_ = apeksdbctl.create_connection('apeks.db')
     datas = apeksdbctl.LoadDatas(db_)
-    render_template("admin.html", data=datas)
+    return render_template("admin.html", data=datas)
 
 @app.route('/clear', methods=["GET", "POST"])
 def bersih():
@@ -199,5 +199,5 @@ def measure():
     return make_response(jsonify(resp), 200)
 
 if __name__ == '__main__':
-    
+    apeksdbctl.DbInit()
     app.run(host='0.0.0.0', port=5050, debug=True)

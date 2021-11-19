@@ -1,5 +1,6 @@
 from flask import Flask
 from Pedokom import pedokom
+from dbctl import apeksdbctl
 
 try:
     Coms = pedokom.PedoKom('/dev/ttyUSB0', 9600, .1)
@@ -14,6 +15,7 @@ def PingMe():
     print(asu)
 
 def main():
+    apeksdbctl.DbInit()
     app_ = Flask(__name__)
     #Start Ping and Send Challenge Request to Arduino
     print('Sending Challenge Request...')

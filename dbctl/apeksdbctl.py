@@ -44,9 +44,11 @@ def LoadDatas(conn):
     rows = cur.fetchall()
 
     temp = []
+    it = 1
 
     for row in rows:
-        temp.append({"nama": row[0],
+        temp.append({"id": it,
+                     "nama": row[0],
                      "jk": row[1],
                      "umur": row[2],
                      "waktu": row[3],
@@ -54,6 +56,7 @@ def LoadDatas(conn):
                      "tinggi": row[5],
                      "status": row[6]
                     })
+        it += 1
 
     return temp
 
