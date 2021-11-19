@@ -185,6 +185,7 @@
                                 <div class="form-example-int form-example-st">
                                     <div class="form-group">
                                         <div class="nk-int-st">
+                                            <input id="name" type="text" class="form-control input-sm" placeholder="Your Name">
                                             <input id="umur" type="text" class="form-control input-sm" placeholder="Enter Age (Year)">
                                         </div>
                                     </div>
@@ -349,10 +350,12 @@
         checkku = document.getElementById("hilang").checked;
         //alert(checkku);
         if (checkku){
+            document.getElementById("name").disabled = true;
             document.getElementById("umur").disabled = true;
             document.getElementById("sel1").disabled = true;
         }
         else{
+            document.getElementById("name").disabled = false;
             document.getElementById("umur").disabled = false;
             document.getElementById("sel1").disabled = false;
         }
@@ -397,14 +400,18 @@
         //xhttp.setRequestHeader("Origin", "*");
         disabledU = document.getElementById("umur").disabled;
         if (disabledU){
-            xhttp.send(JSON.stringify({"usiaa": umur, "kelaminn": jk}));
+            //var jk = document.getElementById("sel1").value;
+            //var umur = document.getElementById("umur").value;
+            //var name = document.getElementById("name").value;
+            xhttp.send(JSON.stringify({"namaa": name, "usiaa": umur, "kelaminn": jk}));
             //var jk = "no";
             //var umur = document.getElementById("umur").value;
         }
         else{
             var jk = document.getElementById("sel1").value;
             var umur = document.getElementById("umur").value;
-            xhttp.send(JSON.stringify({"usia": umur, "kelamin": jk}));
+            var name = document.getElementById("name").value;
+            xhttp.send(JSON.stringify({"namaa": name, "usia": umur, "kelamin": jk}));
         }
         //xhttp.send(JSON.stringify({"usia": umur, "kelamin": jk}));
     }
