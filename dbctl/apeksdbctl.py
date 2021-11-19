@@ -39,13 +39,23 @@ def LoadDatas(conn):
     :return:
     """
     cur = conn.cursor()
-    cur.execute("SELECT * FROM userdata")
+    cur.execute("SELECT name,jk,umur,waktu,berat,tinggi,status FROM userdata")
 
     rows = cur.fetchall()
 
-    #for row in rows:
-    #    print(row)
-    return rows
+    temp = []
+
+    for row in rows:
+        temp.append({"nama": row[0],
+                     "jk": row[1],
+                     "umur": row[2],
+                     "waktu": row[3],
+                     "berat": row[4],
+                     "tinggi": row[5],
+                     "status": row[6]
+                    })
+
+    return temp
 
 def AddData(conn, project):
     """
