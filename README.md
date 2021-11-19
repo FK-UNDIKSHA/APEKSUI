@@ -8,6 +8,10 @@ Dependency:
 - bluepy
 - Flask
 
+For the sake of easiness, please run:
+ `pip install -r requirements.txt`
+when installing
+
 Installation:
 1) Just like ordinary simple flask
 2) Add "apeksui.service on /etc/systemd/system
