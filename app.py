@@ -2,6 +2,9 @@ import socket
 import os
 import json
 import time
+import sqlite3
+
+from sqlite3 import Error
 
 from flask import Flask
 from flask import Flask, redirect, request, jsonify, make_response, render_template, url_for, send_file
@@ -10,6 +13,9 @@ from PedoScore import ZScore
 from Pedokom import pedokom
 from threading import Thread, Event
 from queue import Queue
+from dbctl import apeksdbctl
+from datetime import datetime
+
 from multiprocessing import Process, Queue
 
 import run
@@ -75,14 +81,19 @@ def ThreadD(q):
     print("JSON: ", data)
     
     try:
-        usia = int(data.get("usia",0))
+        usia = round(float(data.get("usia",0))*12) #convert year to month
     except:
-        usia = 0
+        usia = 61
     
     try:
         jk = str(data.get('kelamin', "no")).lower()
     except:
         jk = "no"
+
+    try:
+        nama = str(data.get("namaa", "jondoe"))
+    except:
+        nama = "john doe"
 
     Gender = ""
     if jk == "boy":
@@ -91,14 +102,32 @@ def ThreadD(q):
         Gender = "F"
 
     zee = ""
+
+    #Convert it using age gap
+    if usia <= 60:
+        zimt = ZScore.ZScore(usia, Berat, Gender)
+        zee = "Stunting Indicator" #"Z-Score"
+    elif usia > 60:
+        zimt = ZScore.IMT(Berat, Tinggi/100)
+        zee = "Stunting Indicator" #"BMI (Body Mass Index)"
+
+    #For Historical
+    """
     if usia == 0 and jk == "no":
         zimt = ZScore.IMT(Berat, Tinggi/100)
-        zee = "BMI (Body Mass Index)"
+        zee = "Stunting Indicator" #"BMI (Body Mass Index)"
     else:
         zimt = ZScore.ZScore(usia, Berat, Gender)
-        zee = "Z-Score"
+        zee = "Stunting Indicator" #"Z-Score"
+    """
 
     resp = {"zimt": zimt, "tinggi": str(Tinggi)+" CM", "berat": str(Berat), "Pesan": zee}
+
+    #Nama is not added Yet (HTML NOT ADDED YET)
+    now = datetime.now()
+    waktu = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+    db_ = apeksdbctl.create_connection('apeks.db')
+    apeksdbctl.AddData(db_, [str(nama), str(usia), str(waktu), str(Berat), str(Tinggi), str(zimt)])
     
     Coms.SendCommand("pesanx;Tinggi: " + str(Tinggi) + "CM?" + "Berat: " + str(Berat) + "KG", 0)
     q.put_nowait(resp)
