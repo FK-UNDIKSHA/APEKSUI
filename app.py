@@ -156,6 +156,12 @@ def Sane():
     else:
         return "ok"
 
+@app.route('/admin', methods=["GET", "POST"])
+def Admin():
+    db_ = apeksdbctl.create_connection('apeks.db')
+    datas = apeksdbctl.LoadDatas(db_)
+    render_template("admin.html", data=datas)
+
 @app.route('/clear', methods=["GET", "POST"])
 def bersih():
     global busyo
