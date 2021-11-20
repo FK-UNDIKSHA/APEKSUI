@@ -21,6 +21,10 @@
     <link rel="stylesheet" href="static/css/font-awesome.min.css">
     <!-- owl.carousel CSS
 		============================================ -->
+
+    <link rel="stylesheet" href="static/css/mainLoad.css">
+    <link rel="stylesheet" href="static/css/normalizeLoad.css">
+
     <link rel="stylesheet" href="static/css/owl.carousel.css">
     <link rel="stylesheet" href="static/css/owl.theme.css">
     <link rel="stylesheet" href="static/css/owl.transitions.css">
@@ -129,7 +133,14 @@
 </style>
 </head>
 
-<body>
+<body class="demo">
+    <div id="loader-wrapper">
+			<div id="loader"></div>
+
+			<div class="loader-section section-left"></div>
+            <div class="loader-section section-right"></div>
+
+		</div>
     <div class="modal animated flash" id="myModalfive" role="dialog">
         <div class="modal-dialog modals-default">
             <div class="modal-content">
@@ -201,10 +212,11 @@
                                     <span class="checkmark"></span>
                                 </label>
                                 <br><br>
-                                <button id="ukur" onclick="ReqData()" class="btn btn-success notika-btn-success">Start Measuring</button>
+                                <center><button id="ukur" onclick="ReqData()" disabled class="btn btn-success notika-btn-success btn-block">Busy State, Please Wait..</button></center><br>
                                 </div>
                             </div>
                         </div>
+                        <button id="clear" onclick="ClearData()" class="btn btn-danger notika-btn-danger btn-block">Clear</button>
                     </div>
                 </div>
             </div>
@@ -347,13 +359,29 @@
     <script src="static/js/tawk-chat.js"></script> -->
 
     <script>
+
     document.onreadystatechange = () => {
       if (document.readyState === 'complete') {
         console.log('DOM is ready.');
+
+        setTimeout(function(){
+            $('body').addClass('loaded');
+            //$('h1').css('color','#222222');
+        }, 3000);
         Sanity();
         document.getElementById("hilang").removeAttribute('disabled');
       }
     };
+
+    window.addEventListener('beforeunload', function(event) {
+        $('body').removeClass('loaded');
+        ignora();
+    }, false);
+
+    function ClearData(){
+        document.getElementById("name").value = "";
+        document.getElementById("umur").value = "";
+    }
 
     function ignora(){
         checkku = document.getElementById("hilang").checked;
@@ -362,12 +390,14 @@
         if (checkku){
             document.getElementById("name").disabled = true;
             document.getElementById("umur").disabled = true;
+            document.getElementById("clear").disabled = true;
             document.getElementById("sel1").disabled = true;
             cheku.removeAttribute('required');
         }
         else{
             document.getElementById("name").disabled = false;
             document.getElementById("umur").disabled = false;
+            document.getElementById("clear").disabled = false;
             document.getElementById("sel1").disabled = false;
             cheku.setAttribute('required', true);
         }
@@ -379,6 +409,12 @@
         sanity.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 if (this.responseText == "ok"){
+                    document.getElementById("umur").addEventListener("keypress", function (evt) {
+                        if (evt.which < 48 || evt.which > 57)
+                        {
+                            evt.preventDefault();
+                        }
+                    });
                     document.getElementById("ukur").disabled = false;
                     document.getElementById("ukur").innerHTML = "Start Measuring";
                 }
@@ -387,26 +423,43 @@
         sanity.open("GET", "/sane", true);
         sanity.send(null);
     }
-
+    var busyo = 0;
     function ReqData(){
-        var startTime = performance.now();
+        if (busyo == 1){
+            document.getElementById("ukur").disabled = false;
+            document.getElementById("ukur").innerHTML = "Start Measuring";
+            document.getElementById("umur").disabled = false;
+            document.getElementById("name").disabled = false;
+            document.getElementById("clear").disabled = false;
+            busyo = 0;
+            var xhttp2 = new XMLHttpRequest();
+            xhttp2.open("GET", "/clear", true);
+            xhttp2.send(null);
+            xhttp.abort();
+        }
+        //var startTime = performance.now();
         var xhttp = new XMLHttpRequest();
         var xhttp2 = new XMLHttpRequest();
-        xhttp2.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                if (this.responseText == "ok"){
-                    document.getElementById("ukur").disabled = false;
-                    document.getElementById("ukur").innerHTML = "Start Measuring";
-                }
-            }
-        };
+        //xhttp2.onreadystatechange = function() {
+        //    if (this.readyState == 4 && this.status == 200) {
+        //        if (this.responseText == "ok"){
+        //            document.getElementById("ukur").disabled = false;
+        //            document.getElementById("ukur").innerHTML = "Start Measuring";
+        //        }
+        //    }
+        //};
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 if (this.responseText == "ok"){
                     document.getElementById("ukur").disabled = false;
                     document.getElementById("ukur").innerHTML = "Start Measuring";
+                    document.getElementById("umur").disabled = false;
+                    document.getElementById("name").disabled = false;
+                    document.getElementById("clear").disabled = false;
+                    busyo = 0;
                 }
                 else{
+                    busyo = 0;
                     myJSONS = JSON.parse(this.responseText);
                     console.log(myJSONS);
                     document.getElementById("tinggi").innerHTML = myJSONS.tinggi;
@@ -423,21 +476,31 @@
                         .trigger('change');
                     document.getElementsByClassName("knob")[0].value = myJSONS.berat;
                     document.getElementById("zscore1").innerHTML = myJSONS.Pesan;
+                    document.getElementById("ukur").innerHTML = "Start Measuring";
+                    document.getElementById("umur").disabled = false;
+                    document.getElementById("name").disabled = false;
                 }
             }
         };
         xhttp.open("POST", "/measure", true);
-        document.getElementById("ukur").disabled = true;
-        document.getElementById("ukur").innerHTML = "Waiting For Measuring...";
+        busyo = 1;
+        //document.getElementById("ukur").disabled = true;
+        document.getElementById("ukur").innerHTML = "Measuring... (Tap to Stop)";
         //xhttp.setRequestHeader("Content-Type", "application/json");
         //xhttp.setRequestHeader("Origin", "*");
         disabledU = document.getElementById("umur").disabled;
         if (disabledU){
+            document.getElementById("umur").disabled = true;
+            document.getElementById("name").disabled = true;
+            document.getElementById("clear").disabled = true;
             xhttp.send(JSON.stringify({"namaa": name, "usiaa": umur, "kelaminn": jk}));
             //var jk = "no";
             //var umur = document.getElementById("umur").value;
         }
         else{
+            document.getElementById("umur").disabled = true;
+            document.getElementById("name").disabled = true;
+            document.getElementById("clear").disabled = true;
             var jk = document.getElementById("sel1").value;
             var umur = document.getElementById("umur").value;
             var name = document.getElementById("name").value;
