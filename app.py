@@ -137,7 +137,15 @@ def ThreadD(q):
 
 @app.route('/', methods=["GET"])
 def index():
+    global q, worker, busyo
     #return render_template('index.html')
+    if busyo == 1:
+        Coms.SendCommand("pesanx;    Welcome?Waiting Input...", 0)
+        print("[DEBUG] Busy State Terminate...")
+        os.remove("measure.run")
+        worker.terminate()
+        busyo = 0
+
     return render_template('index.html')
 
 def PingMe():
@@ -177,22 +185,28 @@ def bersih():
 @app.route('/measure', methods=["GET", "POST"])
 def measure():
     global q, worker, busyo
-    
+
     if busyo == 1:
         print("[DEBUG] Busy State Terminate...")
+        os.remove("measure.run")
         worker.terminate()
 
     busyo = 1
     q = Queue(maxsize=0)
     data = request.get_json(force=True)
-    
+
+    with open("measure.run", 'w') as f:
+        f.write("1")
+
     worker = Process(target=ThreadD, args=(q,))
     worker.daemon = True
     worker.start()
-    
+
     q.put(data)
-    
-    worker.join()
+
+    while os.path.exists("measure.run"):
+        time.sleep(2)
+    #worker.join()
     
     resp = q.get()
     busyo = 0
