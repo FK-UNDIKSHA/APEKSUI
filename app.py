@@ -86,7 +86,7 @@ def ThreadD(q):
         usia = 61
     
     try:
-        jk = str(data.get('kelamin', "no")).lower()
+        jk = str(data.get('kelamin', "no"))
     except:
         jk = "no"
 
@@ -96,7 +96,7 @@ def ThreadD(q):
         nama = "john doe"
 
     Gender = ""
-    if jk == "boy":
+    if jk.lower() == "boy":
         Gender = "M"
     else:
         Gender = "F"
@@ -131,6 +131,7 @@ def ThreadD(q):
     
     Coms.SendCommand("pesanx;Tinggi: " + str(Tinggi) + "CM?" + "Berat: " + str(Berat) + "KG", 0)
     q.put_nowait(resp)
+    os.remove("measure.run")
     #q.task_done()
 
     #Coms.SendCommand("pesanx;Go WebWifi?=>apeks.net<=")
@@ -139,7 +140,7 @@ def ThreadD(q):
 def index():
     global q, worker, busyo
     #return render_template('index.html')
-    if busyo == 1:
+    if os.path.exists("measure.run"):
         Coms.SendCommand("pesanx;    Welcome?Waiting Input...", 0)
         print("[DEBUG] Busy State Terminate...")
         os.remove("measure.run")
@@ -150,10 +151,16 @@ def index():
 
 def PingMe():
     #time.sleep(2)
-    asu = Coms.SendCommand("yuhu", 1)
+    asu = Coms.SendCommand("yuhu", 2)
     if 'uth3re?' in asu["Response"]:
         Coms.SendCommand("metoo", 0)
     print(asu)
+
+@app.route('/purge', methods=["POST"])
+def Purge():
+    db_ = apeksdbctl.create_connection("apeks.db")
+    apeksdbctl.PurgeData(db_)
+    return "ok"
 
 @app.route('/sane', methods=["GET", "POST"])
 def Sane():
@@ -173,20 +180,23 @@ def Admin():
 @app.route('/clear', methods=["GET", "POST"])
 def bersih():
     global busyo
-    Coms.SendCommand("pesan1;Go WebWifi")
-    Coms.SendCommand("pesan2;=>apeks.net<=")
 
-    time.sleep(3)
-    Coms.SendCommand("pesan1;    Welcome")
-    Coms.SendCommand("pesan2;Waiting Input...")
+    if os.path.exists("measure.run"):
+        print("[DEBUG] Busy State Terminate...")
+        os.remove("measure.run")
+        worker.terminate()
+        busyo = 0
+
+    Coms.SendCommand("pesanx;Go WebWifi?=>apeks.net<=")
+    Coms.SendCommand("pesanx;    Welcome?Waiting Input...")
     busyo = 0
     return "ok"
 
 @app.route('/measure', methods=["GET", "POST"])
 def measure():
     global q, worker, busyo
-
-    if busyo == 1:
+    
+    if os.path.exists("measure.run") and busyo == 1:
         print("[DEBUG] Busy State Terminate...")
         os.remove("measure.run")
         worker.terminate()
@@ -194,20 +204,20 @@ def measure():
     busyo = 1
     q = Queue(maxsize=0)
     data = request.get_json(force=True)
-
+    
     with open("measure.run", 'w') as f:
         f.write("1")
 
     worker = Process(target=ThreadD, args=(q,))
     worker.daemon = True
     worker.start()
-
+    
     q.put(data)
-
+    
     while os.path.exists("measure.run"):
         time.sleep(2)
     #worker.join()
-    
+
     resp = q.get()
     busyo = 0
     return make_response(jsonify(resp), 200)

@@ -102,7 +102,8 @@
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-3">
 								<div class="breadcomb-report">
-									<button data-toggle="tooltip" data-placement="left" title="Refresh" onclick="location.reload()" class="btn"><i class="notika-icon notika-refresh"></i></button>
+									<button data-toggle="tooltip" data-placement="left" title="Refresh" onclick="location.reload()" class="btn"><i class="notika-icon notika-refresh"></i> Refresh</button><br><br>
+									<button style="background:#d9534f;!important" data-toggle="tooltip" data-placement="left" title="Clear Data" onclick="Purge()" class="btn btn-danger">Clear Data</button>
 								</div>
 							</div>
 						</div>
@@ -153,7 +154,7 @@
             </div>
         </div>
     </div>
-    <!-- Data Table area End--><br><br>
+    <!-- Data Table area End--><br><br><br>
     <!-- Start Footer area-->
     <div class="footer-copyright-area">
       <div class="container">
@@ -233,7 +234,24 @@
     <script src="static/js/main.js"></script>
 	<!-- tawk chat JS
 		============================================ -->
-    <script src="static/js/tawk-chat.js"></script>
+
+    <script>
+    function Purge(){
+        var txt;
+        var r = confirm("Do You Want to Purge All Data?");
+        if (r == true) {
+        txt = "You pressed OK!";
+        console.log(txt);
+        var xhttp2 = new XMLHttpRequest();
+        xhttp2.open("POST", "/purge", true);
+        xhttp2.send(null);
+        location.reload();
+        } else {
+        txt = "You pressed Cancel!";
+        console.log(txt);
+        }
+    }
+    </script>
 </body>
 
 </html>
