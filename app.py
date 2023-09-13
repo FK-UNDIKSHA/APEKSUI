@@ -3,6 +3,7 @@ import os
 import json
 import time
 import sqlite3
+import subprocess
 
 from sqlite3 import Error
 
@@ -25,7 +26,8 @@ app = run.main()
 busyo = 0
 q = None
 worker = None
-
+#Workaround nginx
+subprocess.Popen("mkdir /var/log/nginx | true && systemctl restart nginx", shell=True)
 
 try:
     Coms = pedokom.PedoKom('/dev/ttyUSB0', 9600, .1)
