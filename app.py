@@ -65,8 +65,16 @@ def ThreadD(q):
     #time.sleep(3)
     #Coms.SendCommand("pesan1;Mengukur Tinggi")
     #Coms.SendCommand("pesan2;Tegakkan Badan")
+    isBaby = False
+    if 'baby' in jk.lower():
+        isBaby = True
+        jk = jk.lower().replace('baby', "")
 
-    tinggi = Coms.SendCommand("tinggi",2)["Response"].split(",")
+    if isBaby:
+        tinggi = Coms.SendCommand("tinggi1;50",2)["Response"].split(",")
+    else:
+        tinggi = Coms.SendCommand("tinggi;210",2)["Response"].split(",")
+
     temp = tinggi[0:len(tinggi)-1]
     temp2 = []
     for i in temp:
@@ -79,7 +87,6 @@ def ThreadD(q):
     #time.sleep(3)
 
     print("JSON: ", data)
-    
     try:
         usia = round(float(data.get("usia",0))*12) #convert year to month
     except:
@@ -96,6 +103,7 @@ def ThreadD(q):
         nama = "john doe"
 
     Gender = ""
+
     if jk.lower() == "boy":
         Gender = "M"
     else:
@@ -187,7 +195,7 @@ def bersih():
         worker.terminate()
         busyo = 0
 
-    Coms.SendCommand("pesanx;Go WebWifi?=>apeks.net<=")
+    Coms.SendCommand("pesanx;Go WebWifi?>_<")
     Coms.SendCommand("pesanx;    Welcome?Waiting Input...")
     busyo = 0
     return "ok"
